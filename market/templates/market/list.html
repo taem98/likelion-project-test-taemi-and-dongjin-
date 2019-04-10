@@ -1,0 +1,10 @@
+<head>
+</head>
+
+<body>
+    {% for product in products.all %}
+         <div class="container">
+            <h2><a href="{{product.id}}/hit">{{product.title}}</a>[{{product.product_hit}}]</h2>
+        </div>
+    {% endfor %}
+</body>
