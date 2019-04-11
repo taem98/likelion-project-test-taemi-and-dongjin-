@@ -2,9 +2,10 @@ from django import forms
 from .models import Product, Book, Room, ProductComment, BookComment, RoomComment, ProductImages, BookImages, RoomImages
 
 class ProductForm(forms.ModelForm):
+    # image = forms.ImageField(label='Product_Image')
     class Meta:
         model = Product
-        fields = ('price', 'image', 'title', 'text', 'status_content', 'number', 'soldout')
+        fields = ('price', 'image', 'title', 'text', 'status_content', 'number', 'soldout',)
 
 class BookForm(forms.ModelForm):
     class Meta:

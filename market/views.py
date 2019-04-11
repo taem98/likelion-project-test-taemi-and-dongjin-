@@ -35,15 +35,14 @@ def hit(request, post_id):
 
 def product_detail(request, post_id):
     product_detail = get_object_or_404(Product, id=post_id)
-    return render(request, 'market/product_detail.html',{'product':product_detail})
+    return render(request, 'market/product_detail.html', {'product':product_detail})
 
 
 def product_new(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.pub_date = timezone.now
             product.save()
             return redirect('product_detail', post_id=post.pk)
     else:
@@ -155,3 +154,20 @@ def room_delete(request, post_id):
     room = get_object_or_404(Room, id=post_id)
     room.delete()
     return redirect(list)
+
+
+#image_upload=====================================================================================
+
+class ImageUploadView():
+    def get(self, request):
+        photos_list = Photo.objects.all()
+        return render(self.request, 'market/product_new.html',{'photos':photos_list})
+
+    def post(self, request):
+        form = ProductImageForm(self.request.POST, self.request.FILES) #FILES로 써도 괜찮은지 알아보기
+        if form.is_valid():
+            photo = form.save()
+            data = {'is_valid': Ture}
+        else:
+            data = {'is_valid': False}
+        return JsonResponse(data)
