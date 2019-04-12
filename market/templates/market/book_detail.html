@@ -1,1 +1,18 @@
-book_detail
+<h1>book_detail</h1>
+<a href="{% url 'list' %}">홈으로</a>
+<br>
+
+<a class="badge badge-secondary" href="{% url 'book_edit' post_id=book.pk %}">수정</a>
+<br>
+<a class="badge badge-secodary" href="{% url 'book_delete' post_id=book.pk %}">삭제</a>
+<br>
+
+가격 : {{ book.price }}<br>
+{% comment %} 사진 : <img src="{{product.image.url}}" alt="" ><br> {% endcomment %}
+제목 : {{ book.title }}<br>
+내용 : {{ book.text }}<br>
+상태 : {{ book.status_content }}<br>
+번호 : {{ book.number }}<br>
+soldout : {{ book.soldout }}<br>
+edition : {{ book.edition }}<br>
+author : {{ book.author }}<br>

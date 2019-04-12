@@ -2,12 +2,24 @@
 </head>
 
 <body>
-    <h1>list</h1>
-    {% for product in products.all %}
-     <a href="{% url 'product_new'%}" class="top-menu">물품 작성</a>
-         <div class="container">
-         {% comment %} list 어떻게 가져올 건지 써야함 {% endcomment %}
-            <h2><a href="{{product.id}}/hit">{{product.title}}</a>[{{product.product_hit}}]</h2>
-        </div>
-    {% endfor %}
+    <div class="container">
+        <h1>list</h1>
+        <h2>product</h2>
+        <a href="{% url 'product_new'%}" class="top-menu">물품 등록</a>
+        {% for product in products.all %}
+                <h2><a href="/market/product/{{product.id}}/hit">{{product.title}}</a>[{{product.hit}}]</h2>
+        {% endfor %}
+
+        <h2>book</h2>
+        <a href="{% url 'book_new'%}" class="top-menu">책 등록</a>
+        {% for book in books.all %}
+            <h2><a href="/market/book/{{book.id}}/hit">{{book.title}}</a>[{{book.hit}}]</h2>
+        {% endfor %}
+
+        <h2>Room</h2>
+        <a href="{% url 'room_new'%}" class="top-menu">방 등록</a>
+        {% for room in rooms.all %}
+            <h2><a href="/market/room/{{room.id}}/hit">{{room.title}}</a>[{{room.hit}}]</h2>
+        {% endfor %}
+    </div>
 </body>

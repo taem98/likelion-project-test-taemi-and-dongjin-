@@ -1,2 +1,18 @@
 <h1>product_detail</h1>
-<a href="{% url 'product_list' %}">홈으로</a>
+<a href="{% url 'list' %}">홈으로</a>
+<br>
+
+<a class="badge badge-secondary" href="{% url 'product_edit' post_id=product.pk %}">수정</a>
+<br>
+<a class="badge badge-secodary" href="{% url 'product_delete' post_id=product.pk %}">삭제</a>
+<br>
+
+가격 : {{ product.price }}<br>
+{% comment %} 사진 : <img src="{{product.image.url}}" alt="" ><br> {% endcomment %}
+제목 : {{ product.title }}<br>
+내용 : {{ product.text }}<br>
+상태 : {{ product.status_content }}<br>
+번호 : {{ product.number }}<br>
+soldout : {{ product.soldout }}<br>
+
+ 
