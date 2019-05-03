@@ -35,7 +35,7 @@ def product_hit(request, post_id):
 
 def product_detail(request, post_id):
     product_detail = get_object_or_404(Product, id=post_id)
-    return render(request, 'market/product_detail.html', {'product':product_detail})
+    return render(request, 'market/product_detail.html', {'product': product_detail})
 
 
 def product_new(request):
@@ -68,6 +68,11 @@ def product_delete(request, post_id):
     product = get_object_or_404(Product, id=post_id)
     product.delete()
     return redirect('list')
+
+def product_application(request, post_id):
+    product = get_object_or_404(Product, id=post_id)
+    # 작성 폼 추가 필요
+    return render(request, 'market/product_application.html',)
     
 
 
@@ -170,7 +175,7 @@ class ImageUploadView():
         form = ProductImageForm(self.request.POST, self.request.FILES) #FILES로 써도 괜찮은지 알아보기
         if form.is_valid():
             photo = form.save()
-            data = {'is_valid': Ture}
+            data = {'is_valid': Ture, 'url': product.image.url}
         else:
             data = {'is_valid': False}
         return JsonResponse(data)

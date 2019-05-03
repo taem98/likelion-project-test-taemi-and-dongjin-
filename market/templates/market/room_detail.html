@@ -1,20 +1,23 @@
-<h1>room_detail</h1>
-<a href="{% url 'list' %}">홈으로</a>
-<br>
+{% extends "market/base.html" %}
+{% block content %}
+    <h1>room_detail</h1>
+    <a href="{% url 'list' %}">홈으로</a>
+    <br>
 
-<a class="badge badge-secondary" href="{% url 'room_edit' post_id=room.pk %}">수정</a>
-<br>
-<a class="badge badge-secodary" href="{% url 'room_delete' post_id=room.pk %}">삭제</a>
-<br>
+    <a class="badge badge-secondary" href="{% url 'room_edit' post_id=room.pk %}">수정</a>
+    <br>
+    <a class="badge badge-secodary" href="{% url 'room_delete' post_id=room.pk %}">삭제</a>
+    <br>
 
-가격 : {{ room.price }}<br>
-{% comment %} 사진 : <img src="{{product.image.url}}" alt="" ><br> {% endcomment %}
-제목 : {{ room.title }}<br>
-내용 : {{ room.text }}<br>
-상태 : {{ room.status_content }}<br>
-번호 : {{ room.number }}<br>
-soldout : {{ room.soldout }}<br>
-조회수 : {{ room.hit }}
-위치 : {{ room.position }}
+    가격 : {{ room.price }}<br>
+    {% comment %} 사진 : <img src="{{product.image.url}}" alt="" ><br> {% endcomment %}
+    제목 : {{ room.title }}<br>
+    내용 : {{ room.text }}<br>
+    상태 : {{ room.status_content }}<br>
+    번호 : {{ room.number }}<br>
+    soldout : {{ room.soldout }}<br>
+    조회수 : {{ room.hit }}
+    위치 : {{ room.position }}
+{% endblock %}
 
  

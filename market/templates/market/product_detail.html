@@ -1,18 +1,26 @@
-<h1>product_detail</h1>
-<a href="{% url 'list' %}">홈으로</a>
-<br>
+{% extends "market/base.html" %}
+{% block content %}
+    <h1>product_detail</h1>
+    <a href="{% url 'list' %}">홈으로</a><br>
+    <a class="badge badge-secondary" href="{% url 'product_edit' post_id=product.pk %}">수정</a><br>
+    <a class="badge badge-secodary" href="{% url 'product_delete' post_id=product.pk %}">삭제</a><br>
+    
+    가격 : {{ product.price }}<br>
+    {% comment %} 사진 : <img src="{{product.image.url}}" alt="" ><br> {% endcomment %}
+    제목 : {{ product.title }}<br>
+    내용 : {{ product.text }}<br>
+    상태 : {{ product.status_content }}<br>
+    번호 : {{ product.number }}<br>
+    soldout : {{ product.soldout }}<br><br><br>
+    {% if product.soldout == False %}
+        <a href="#" onclick="window.open('application', 'window팝업','width=500, height=500, toolbar=no, menubar=no, status=no, directories=yes, top=200, left=400,');">구매 신청하기</a>
+    {% else %}
+        <a class="btn btn-default" href="#" role="button">sold out</a>
+    {% endif %}
+{% endblock %}
 
-<a class="badge badge-secondary" href="{% url 'product_edit' post_id=product.pk %}">수정</a>
-<br>
-<a class="badge badge-secodary" href="{% url 'product_delete' post_id=product.pk %}">삭제</a>
-<br>
+{% block javascript %}
+{% endblock %}
 
-가격 : {{ product.price }}<br>
-{% comment %} 사진 : <img src="{{product.image.url}}" alt="" ><br> {% endcomment %}
-제목 : {{ product.title }}<br>
-내용 : {{ product.text }}<br>
-상태 : {{ product.status_content }}<br>
-번호 : {{ product.number }}<br>
-soldout : {{ product.soldout }}<br>
-
+ 
  

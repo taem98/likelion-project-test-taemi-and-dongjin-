@@ -16,8 +16,6 @@ class Base(models.Model):
         self.hit = self.hit + 1
         self.save()
 
-
-
 def get_image_filename(instance, filename, model):
     title = instance.model.title
     id = instance.model.id
@@ -25,7 +23,6 @@ def get_image_filename(instance, filename, model):
     return "%s_images/%s-%s" % (model, slug, filename)  
 
 class Images(models.Model):
-    pass
     image = models.ImageField(upload_to=get_image_filename, verbose_name='Image') 
 
 class Comment(models.Model):

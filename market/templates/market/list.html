@@ -1,7 +1,5 @@
-<head>
-</head>
-
-<body>
+{% extends "market/base.html" %}
+{% block content %}
     <div class="container">
         <h1>list</h1>
         <h2>product</h2>
@@ -22,4 +20,4 @@
             <h2><a href="/market/room/{{room.id}}/hit">{{room.title}}</a>[{{room.hit}}]</h2>
         {% endfor %}
     </div>
-</body>
+{% endblock %}
