@@ -19,5 +19,21 @@
         {% for room in rooms.all %}
             <h2><a href="/market/room/{{room.id}}/hit">{{room.title}}</a>[{{room.hit}}]</h2>
         {% endfor %}
+
+{% comment %} search {% endcomment %}
+    {% comment %} <form action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <input id='search' name='search'>
+        <input type="submit" value='검색'>
+    </form> {% endcomment %}
+    <form action="{% url 'search' %}"method="POST" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="brn brn-secondary">검색</button>
+    </form>
+        <h2>search 확인</h2>
+        {% for post in posts %}
+            <h2><a href="/market/{{post.category}}/{{room.id}}/hit">{{post.title}}</a>[{{post.hit}}]</h2>
+        {% endfor %}
     </div>
 {% endblock %}

@@ -28,7 +28,8 @@ urlpatterns = [
     path('room/delete/<int:post_id>/', views.room_delete, name="room_delete"),
     path('room/addcomment/<int:post_id>', views.room_add_comment, name="room_addcomment"),
     path('room/addrecomment/<int:comment_id>',views.room_add_recomment, name="room_recomment"),
-    
+
+    path('search/', views.search, name="search"),
     path('upload/', views.ImageUploadView, name="upload"),
     
 ]

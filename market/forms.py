@@ -1,6 +1,7 @@
 from django import forms
 from .models import Product, Book, Room, ProductComment, BookComment, RoomComment, ProductImages, BookImages, RoomImages
 
+
 class ProductForm(forms.ModelForm):
     # image = forms.ImageField(label='Product_Image')
     class Meta:
@@ -61,3 +62,12 @@ class RoomImageForm(forms.ModelForm):
     class Meta:
         model = RoomImages
         fields = ('image', )
+
+class SearchForm(forms.Form):
+    CHOICES= (
+    ('1', 'book'),
+    ('2', 'product'),
+    ('3', 'room'),
+    )
+    select = forms.CharField(widget=forms.Select(choices=CHOICES))
+    search = forms.CharField(max_length=200)

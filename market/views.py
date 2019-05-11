@@ -1,17 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Product, Book, Room, ProductComment, BookComment, RoomComment, Comment
-from .forms import ProductForm, BookForm, RoomForm, ProductCommentForm, BookCommentForm, RoomCommentForm
+from .forms import ProductForm, BookForm, RoomForm, ProductCommentForm, BookCommentForm, RoomCommentForm, SearchForm
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 # def list(request, name):
 def list(request):
     product_all = Product.objects.all()
     book_all = Book.objects.all()
     room_all = Room.objects.all()
-    return render(request, 'market/list.html', {'products' : product_all, 'books':book_all, 'rooms':room_all,})
+    form = SearchForm()
+    return render(request, 'market/list.html', {'products' : product_all, 'books':book_all, 'rooms':room_all, 'form':form,})
 
     # if name == 'book':
     #     return render(request, 'list.html',{
@@ -346,3 +348,28 @@ class ImageUploadView():
         else:
             data = {'is_valid': False}
         return JsonResponse(data)
+
+#search =========================================================================
+
+def search(request):
+    form = SearchForm(request.POST)
+    posts = []
+    if form.is_valid():
+        select = form.cleaned_data['select']
+        search = form.cleaned_data['search']
+        # Q class 를 이용할때 #
+        if select == '1' :
+            posts = Product.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+        elif select == '2':
+            posts = Book.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+        else :
+            posts = Room.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+        # 파이썬 문자열 비교를 이용할때 #
+        # a = Post.objects.all()
+        # for post in a:
+        #     if search in post.title:
+        #         posts.append(get_object_or_404(Post, pk=post.id))
+        return render(request, 'market/list.html', {
+                'posts': posts,
+            })
+       
