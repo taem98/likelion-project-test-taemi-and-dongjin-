@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Product, Book, Room
-from .forms import ProductForm, BookForm, RoomForm
-
+from .models import Product, Book, Room, ProductComment, BookComment, RoomComment, Comment
+from .forms import ProductForm, BookForm, RoomForm, ProductCommentForm, BookCommentForm, RoomCommentForm
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 # def list(request, name):
 def list(request):
@@ -35,7 +37,8 @@ def product_hit(request, post_id):
 
 def product_detail(request, post_id):
     product_detail = get_object_or_404(Product, id=post_id)
-    return render(request, 'market/product_detail.html', {'product': product_detail})
+    form = ProductCommentForm()
+    return render(request, 'market/product_detail.html', {'product': product_detail, 'form':form,})
 
 
 def product_new(request):
@@ -73,7 +76,61 @@ def product_application(request, post_id):
     product = get_object_or_404(Product, id=post_id)
     # 작성 폼 추가 필요
     return render(request, 'market/product_application.html',)
+
     
+@csrf_exempt
+def product_add_comment(request, post_id):
+    product = get_object_or_404(Product, id=post_id)
+    if request.method == 'POST':
+        form = ProductCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.save()
+            return redirect('product_detail', product.id)
+    # book = get_object_or_404(Book, pk=post_id)
+    # if request.method == 'POST':
+    #     if request.is_ajax(): #ajax쓸떄
+    #         form = BookCommentForm(request.POST or None)
+    #         data = request.POST.get("commentBody")
+    #         if form.is_valid():
+    #             comment = form.save(commit=False)
+    #             comment.book = book
+    #             comment.save()
+    #             comments = book.bookcomment_set.all()
+    #             a = list(comments.values())
+    #             print(a)
+
+    #             # data = {
+    #             #     'comments':comments.values(),
+    #             # }
+
+    #             # ajax가 아닐 때
+    #             # return redirect('detail', post.id)
+    #             # ajax를 사용할 때
+    #             return JsonResponse(a, safe=False)
+    #             # return HttpResponse(json.dumps(comments),content_type='application/json')
+    #             # return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+    # else:
+    #     form = BookCommentForm()
+    # return render(request, 'market/book_detail.html', {
+    #     'book': book,
+    #     'form': form,
+    #     }
+    # )
+
+@csrf_exempt
+def product_add_recomment(request, comment_id):
+    comment = get_object_or_404(ProductComment, id = comment_id)
+    product = comment.product
+    if request.method == 'POST':
+        form = ProductCommentForm(request.POST)
+        if form.is_valid():
+            recomment = form.save(commit=False)
+            recomment.product = product
+            recomment.recomment = comment
+            recomment.save()
+            return redirect('product_detail', product.id)
 
 
 #book=====================================================================================
@@ -85,7 +142,8 @@ def book_hit(request, post_id):
 
 def book_detail(request, post_id):
     book_detail = get_object_or_404(Book, id=post_id)
-    return render(request, 'market/book_detail.html', {'book':book_detail})
+    form = BookCommentForm()
+    return render(request, 'market/book_detail.html', {'book':book_detail, 'form':form,})
 
 
 def book_new(request):
@@ -119,6 +177,59 @@ def book_delete(request, post_id):
     book.delete()
     return redirect('list')
 
+@csrf_exempt
+def book_add_comment(request, post_id):
+    book = get_object_or_404(Book, id=post_id)
+    if request.method == 'POST':
+        form = BookCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.book = book
+            comment.save()
+            return redirect('book_detail',book.id)
+    # book = get_object_or_404(Book, pk=post_id)
+    # if request.method == 'POST':
+    #     if request.is_ajax(): #ajax쓸떄
+    #         form = BookCommentForm(request.POST or None)
+    #         data = request.POST.get("commentBody")
+    #         if form.is_valid():
+    #             comment = form.save(commit=False)
+    #             comment.book = book
+    #             comment.save()
+    #             comments = book.bookcomment_set.all()
+    #             a = list(comments.values())
+    #             print(a)
+
+    #             # data = {
+    #             #     'comments':comments.values(),
+    #             # }
+
+    #             # ajax가 아닐 때
+    #             # return redirect('detail', post.id)
+    #             # ajax를 사용할 때
+    #             return JsonResponse(a, safe=False)
+    #             # return HttpResponse(json.dumps(comments),content_type='application/json')
+    #             # return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+    # else:
+    #     form = BookCommentForm()
+    # return render(request, 'market/book_detail.html', {
+    #     'book': book,
+    #     'form': form,
+    #     }
+    # )
+    
+@csrf_exempt
+def book_add_recomment(request, comment_id):
+    comment = get_object_or_404(BookComment, id = comment_id)
+    book = comment.book
+    if request.method == 'POST':
+        form = BookCommentForm(request.POST)
+        if form.is_valid():
+            recomment = form.save(commit=False)
+            recomment.book = book
+            recomment.recomment = comment
+            recomment.save()
+            return redirect('book_detail', book.id)
 
 #Room=====================================================================================
 def room_hit(request, post_id):
@@ -129,7 +240,8 @@ def room_hit(request, post_id):
 
 def room_detail(request, post_id):
     room_detail = get_object_or_404(Room, id=post_id)
-    return render(request, 'market/room_detail.html', {'room':room_detail})
+    form = RoomCommentForm()
+    return render(request, 'market/room_detail.html', {'room':room_detail, 'form':form,})
 
 
 def room_new(request):
@@ -163,6 +275,61 @@ def room_delete(request, post_id):
     room.delete()
     return redirect('list')
 
+    
+
+@csrf_exempt
+def room_add_comment(request, post_id):
+    room = get_object_or_404(Room, id=post_id)
+    if request.method == 'POST':
+        form = RoomCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.room = room
+            comment.save()
+            return redirect('room_detail',room.id)
+    # book = get_object_or_404(Book, pk=post_id)
+    # if request.method == 'POST':
+    #     if request.is_ajax(): #ajax쓸떄
+    #         form = BookCommentForm(request.POST or None)
+    #         data = request.POST.get("commentBody")
+    #         if form.is_valid():
+    #             comment = form.save(commit=False)
+    #             comment.book = book
+    #             comment.save()
+    #             comments = book.bookcomment_set.all()
+    #             a = list(comments.values())
+    #             print(a)
+
+    #             # data = {
+    #             #     'comments':comments.values(),
+    #             # }
+
+    #             # ajax가 아닐 때
+    #             # return redirect('detail', post.id)
+    #             # ajax를 사용할 때
+    #             return JsonResponse(a, safe=False)
+    #             # return HttpResponse(json.dumps(comments),content_type='application/json')
+    #             # return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+    # else:
+    #     form = BookCommentForm()
+    # return render(request, 'market/book_detail.html', {
+    #     'book': book,
+    #     'form': form,
+    #     }
+    # )
+    
+@csrf_exempt
+def room_add_recomment(request, comment_id):
+    comment = get_object_or_404(RoomComment, id = comment_id)
+    room = comment.room
+    if request.method == 'POST':
+        form = RoomCommentForm(request.POST)
+        if form.is_valid():
+            recomment = form.save(commit=False)
+            recomment.room = room
+            recomment.recomment = comment
+            recomment.save()
+            return redirect('room_detail', room.id)
 
 #image_upload=====================================================================================
 

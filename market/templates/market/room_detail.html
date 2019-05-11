@@ -18,6 +18,30 @@
     soldout : {{ room.soldout }}<br>
     조회수 : {{ room.hit }}
     위치 : {{ room.position }}
+
+    <div id="commnnetRoom">
+        <div id="commentList">
+            {% for comment in room.roomcomment_set.all %}
+                {% if comment.recomment == NULL %}
+                    {{ comment.text }}<button id="{{comment.id}} reComment" onclick="
+                    addReCommentForm('{{comment.id}}', 'room');"
+                    >대댓글 달기</button></div><br>
+                    {% for recomment in comment.comment_set.all %}
+                    └ {{ recomment.text }}<br>
+                    {% endfor %}
+                <div id="{{ comment.id }}recomment"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="comments">
+        <form action="{% url 'room_addcomment' room.id %}" id="commentForm" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        {% comment %} <button class="addComment">댓글쓰기</button> {% endcomment %}
+        <input type="submit" value="댓글쓰기">
+        </form>
+    </div>
 {% endblock %}
 
  

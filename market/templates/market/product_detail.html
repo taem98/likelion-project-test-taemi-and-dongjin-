@@ -17,6 +17,29 @@
     {% else %}
         <a class="btn btn-default" href="#" role="button">sold out</a>
     {% endif %}
+    <div id="commnnetProduct">
+        <div id="commentList">
+            {% for comment in product.productcomment_set.all %}
+                {% if comment.recomment == NULL %}
+                    {{ comment.text }}<button id="{{comment.id}} reComment" onclick="
+                    addReCommentForm('{{comment.id}}', 'product');"
+                    >대댓글 달기</button></div><br>
+                    {% for recomment in comment.comment_set.all %}
+                    └ {{ recomment.text }}<br>
+                    {% endfor %}
+                <div id="{{ comment.id }}recomment"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="comments">
+        <form action="{% url 'product_addcomment' product.id %}" id="commentForm" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        {% comment %} <button class="addComment">댓글쓰기</button> {% endcomment %}
+        <input type="submit" value="댓글쓰기">
+        </form>
+    </div>
 {% endblock %}
 
 {% block javascript %}

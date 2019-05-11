@@ -17,4 +17,29 @@
     soldout : {{ book.soldout }}<br>
     edition : {{ book.edition }}<br>
     author : {{ book.author }}<br>
+
+    <div id="commnnetBlock">
+        <div id="commentList">
+            {% for comment in book.bookcomment_set.all %}
+                {% if comment.recomment == NULL %}
+                    {{ comment.text }}<button id="{{comment.id}} reComment" onclick="
+                    addReCommentForm('{{comment.id}}', 'book');"
+                    >대댓글 달기</button></div><br>
+                    {% for recomment in comment.comment_set.all %}
+                    └ {{ recomment.text }}<br>
+                    {% endfor %}
+                <div id="{{ comment.id }}recomment"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="comments">
+        <form action="{% url 'book_addcomment' book.id %}" id="commentForm" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        {% comment %} <button class="addComment">댓글쓰기</button> {% endcomment %}
+        <input type="submit" value="댓글쓰기">
+        </form>
+    </div>
+    
 {% endblock %}

@@ -18,16 +18,28 @@ class RoomForm(forms.ModelForm):
         fields = ('price', 'image', 'title', 'text', 'status_content', 'number', 'soldout', 'position')
 
 class ProductCommentForm(forms.ModelForm):
+    text = forms.CharField(max_length=240, 
+        widget=forms.TextInput(attrs={
+            'id': 'commentBody',
+        }))
     class Meta:
         model = ProductComment
         fields = ('text',)
 
 class BookCommentForm(forms.ModelForm):
+    text = forms.CharField(max_length=240, 
+        widget=forms.TextInput(attrs={
+            'id': 'commentBody',
+        }))
     class Meta:
         model = BookComment
         fields = ('text',)
 
 class RoomCommentForm(forms.ModelForm):
+    text = forms.CharField(max_length=240, 
+        widget=forms.TextInput(attrs={
+            'id': 'commentBody',
+        }))
     class Meta:
         model = RoomComment
         fields = ('text',)
