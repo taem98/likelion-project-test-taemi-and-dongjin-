@@ -1,11 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Product, Book, Room, ProductComment, BookComment, RoomComment, Comment
-from .forms import ProductForm, BookForm, RoomForm, ProductCommentForm, BookCommentForm, RoomCommentForm, SearchForm
+from .models import Product, Book, Room, ProductComment, BookComment, RoomComment, Comment, BookImages, ProductImages, RoomImages
+from .forms import ProductForm, BookForm, RoomForm, ProductCommentForm, BookCommentForm, RoomCommentForm, SearchForm, ProductImageForm, BookImageForm, RoomImageForm
 from django.http import JsonResponse
-import json
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+import json
+from django.forms import modelformset_factory
+from django.contrib import messages
+
 
 # def list(request, name):
 def list(request):
@@ -140,6 +143,7 @@ def book_hit(request, post_id):
     book = get_object_or_404(Book, id=post_id)
     book.update_counter()
     return redirect('book_detail', post_id = book.pk)
+# 멀티 업로드
 
 
 def book_detail(request, post_id):
@@ -149,15 +153,25 @@ def book_detail(request, post_id):
 
 
 def book_new(request):
+    ImageFormSet  = modelformset_factory(BookImages, form=BookImageForm, extra=2)
     if request.method == 'POST':
         form = BookForm(request.POST)
-        if form.is_valid():
+        formset = ImageFormSet(request.POST, request.FILES, queryset=BookImages.objects.none())
+        if form.is_valid and formset.is_valid():
             book = form.save(commit=False)
             book.save()
+            for form in formset.cleaned_data:
+                image = form['images']
+                photo = BookImages(book=book, images=image)
+                photo.save()
+            messages.success(request, "Posted!")
             return redirect('book_detail', post_id=book.pk)
+        else:
+            print (postForm.errors, formset.errors)
     else:
         form = BookForm()
-    return render(request, 'market/book_new.html', {'form': form}) 
+        formset = ImageFormSet(queryset=BookImages.objects.none())
+    return render(request, 'market/book_new.html', {'form': form,'formset':formset}) 
 
 
 
@@ -359,9 +373,9 @@ def search(request):
         search = form.cleaned_data['search']
         # Q class 를 이용할때 #
         if select == '1' :
-            posts = Product.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
-        elif select == '2':
             posts = Book.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+        elif select == '2':
+            posts = Product.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
         else :
             posts = Room.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
         # 파이썬 문자열 비교를 이용할때 #

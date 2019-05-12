@@ -16,14 +16,12 @@ class Base(models.Model):
         self.hit = self.hit + 1
         self.save()
 
-def get_image_filename(instance, filename, model):
-    title = instance.model.title
-    id = instance.model.id
-    slug = slugify(title)
-    return "%s_images/%s-%s" % (model, slug, filename)  
+def get_image_filename(instance, filename):
+    id = instance.book.id
+    return "post_images/%s" % (id) 
 
 class Images(models.Model):
-    image = models.ImageField(upload_to=get_image_filename, verbose_name='Image') 
+    images = models.ImageField(upload_to=get_image_filename, verbose_name='Image') 
 
 class Comment(models.Model):
     recomment = models.ForeignKey("self", on_delete=models.SET_NULL, null=True)

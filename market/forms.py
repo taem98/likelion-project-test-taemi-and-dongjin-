@@ -46,22 +46,22 @@ class RoomCommentForm(forms.ModelForm):
         fields = ('text',)
 
 class ProductImageForm(forms.ModelForm):
-    image = forms.ImageField(label='Product_Image')    
+    images = forms.ImageField(label='Product_Image')    
     class Meta:
         model = ProductImages
-        fields = ('image', )
+        fields = ('images', )
 
 class BookImageForm(forms.ModelForm):
-    image = forms.ImageField(label='Book_Image')    
+    images = forms.ImageField(label='Book_Image')    
     class Meta:
         model = BookImages
-        fields = ('image', )
+        fields = ('images', )
 
 class RoomImageForm(forms.ModelForm):
-    image = forms.ImageField(label='Room_Image')    
+    images = forms.ImageField(label='Room_Image')    
     class Meta:
         model = RoomImages
-        fields = ('image', )
+        fields = ('images', )
 
 class SearchForm(forms.Form):
     CHOICES= (

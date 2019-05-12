@@ -17,6 +17,9 @@
     soldout : {{ book.soldout }}<br>
     edition : {{ book.edition }}<br>
     author : {{ book.author }}<br>
+    {% for image in book.bookimages_set.all %}
+        <img src="{{ image.images.url }}" />
+    {% endfor %}
 
     <div id="commnnetBlock">
         <div id="commentList">
