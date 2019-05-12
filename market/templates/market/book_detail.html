@@ -18,8 +18,15 @@
     edition : {{ book.edition }}<br>
     author : {{ book.author }}<br>
     {% for image in book.bookimages_set.all %}
-        <img src="{{ image.images.url }}" />
+        <button onclick="
+        var image = '{{ image.images.url }}';
+        test(image);"><img src="{{ image.images.url }}" height=100 width=100/></button>
     {% endfor %}
+{% comment %} 교환 {% endcomment %}
+    <div id="main-image">
+
+    </div>
+
 
     <div id="commnnetBlock">
         <div id="commentList">
@@ -44,5 +51,13 @@
         <input type="submit" value="댓글쓰기">
         </form>
     </div>
+
+    <script type="text/javascript">
+        function test(image) {                              
+            document.getElementById('main-image').innerHTML = ''; //span같은 태그 밸류 삭제 코드
+            var str = ('<img src="'+image+'" width=500 height=500 />');
+            $('#main-image').append(str);
+        }
+    </script>
     
 {% endblock %}
